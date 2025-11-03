@@ -20,13 +20,13 @@ class ChatController extends Controller
     }
     public function blank_messages()
     {
-
-        return Inertia::render("ChatPage", ['users' => User::where('id', '!=', Auth::id())->get(), 'is_blank' => true]);
+        $current_user = User::find(Auth::id());
+        return Inertia::render("ChatPage", ['current_user' => $current_user, 'users' => User::where('id', '!=', Auth::id())->get(), 'is_blank' => true]);
     }
 
     public function user_messages($user_id)
     {
-        //    $user = Auth::user();
+
         $user = User::find(Auth::id());
         $messages = $user->messagesWith($user_id)->get();
         $recev_user = User::find($user_id);

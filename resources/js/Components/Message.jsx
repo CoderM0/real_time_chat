@@ -22,13 +22,14 @@ export default function Message({
             setMsgStatus(messageStatusUpdates[message.id]);
         }
     }, [messageStatusUpdates, message.id]);
+
     const renderStatusIcon = () => {
         if (msgStatus === "sending") {
             return <FaClock className="w-3 h-3 text-gray-400 ml-1" />;
         } else if (msgStatus === "sent") {
             return <FaCheck className="w-3 h-3 text-gray-400 ml-1" />;
         } else if (msgStatus === "readed") {
-            return <FaCheckDouble className="w-3 h-3 text-blue-400 ml-1" />;
+            return <FaCheckDouble className="w-3 h-3 text-blue-500 ml-1" />;
         }
         return null;
     };
@@ -44,15 +45,19 @@ export default function Message({
             }`}
         >
             <div
-                className={`px-4 py-2 rounded-2xl max-w-xs break-words ${
+                className={`px-4 py-3 rounded-2xl max-w-xs break-words shadow-sm ${
                     isCurrentUser
-                        ? "bg-blue-600 text-white rounded-tr-none"
-                        : "bg-gray-200 text-gray-800 rounded-tl-none"
+                        ? "bg-green-500 text-white rounded-tr-none"
+                        : "bg-gray-100 text-gray-800 rounded-tl-none border border-gray-200"
                 }`}
             >
                 <p className="text-sm">{message.content}</p>
 
-                <div className="flex items-center justify-end mt-1 space-x-1 text-xs text-gray-300">
+                <div
+                    className={`flex items-center justify-end mt-1 space-x-1 text-xs ${
+                        isCurrentUser ? "text-green-100" : "text-gray-500"
+                    }`}
+                >
                     <span>{formatTime(message.created_at)}</span>
                     {isCurrentUser && renderStatusIcon()}
                 </div>

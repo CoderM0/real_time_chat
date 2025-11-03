@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('old_dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::middleware("auth")->group(function () {
-    Route::get("users", [ChatController::class, 'blank_messages'])->name("users");
+    Route::get("users", [ChatController::class, 'blank_messages'])->name("dashboard");
     // Route::get("users/{user_id}", [ChatController::class, 'chat_with_user'])->name("user.chat");
     Route::get("user/{user_id}/messages", [ChatController::class, 'user_messages'])->name("user.messages");
     Route::post("/send", [ChatController::class, 'send_messsage'])->name("send_message");
