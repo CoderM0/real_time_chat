@@ -14,7 +14,7 @@ export default function ChatBox({
     const inputRef = useRef();
     const messagesEndRef = useRef(null);
     const sendButtonRef = useRef(null);
-
+    const [messageStatusUpdates, setMessageStatusUpdates] = useState({});
     useEffect(() => {
         const channel = echo
             .private(`chat.${current_user.id}`)
@@ -23,6 +23,10 @@ export default function ChatBox({
             })
             .listen("MessageRead", (ev) => {
                 console.log("readed", ev.message);
+                setMessageStatusUpdates((prev) => ({
+                    ...prev,
+                    [ev.message.id]: ev.message.msg_status,
+                }));
             });
 
         return () => {
@@ -34,7 +38,7 @@ export default function ChatBox({
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
-    console.log("mshs", messages);
+    // console.log("mshs", messages);
     useEffect(() => {
         scrollToBottom();
     }, [premessages]);
@@ -105,7 +109,7 @@ export default function ChatBox({
         );
 
         return () => observer.disconnect();
-    }, [messages]);
+    }, [premessages]);
 
     ///
     return (
@@ -150,6 +154,7 @@ export default function ChatBox({
             <main className="flex-1 overflow-y-auto p-6 space-y-4">
                 {premessages?.map((msg) => (
                     <Message
+                        messageStatusUpdates={messageStatusUpdates}
                         refs={messageRefs}
                         key={msg.id}
                         currentUserId={current_user.id}

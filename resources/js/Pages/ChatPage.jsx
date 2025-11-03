@@ -14,8 +14,7 @@ export default function ChatPage({
     const [onlineUsers, setOnlineUsers] = useState([]);
 
     useEffect(() => {
-        const channel = echo
-            .join("online-users")
+        echo.join("online-users")
             .here((users) => setOnlineUsers(users))
             .joining((user) => setOnlineUsers((prev) => [...prev, user]))
             .leaving((user) =>
@@ -51,7 +50,7 @@ export default function ChatPage({
                     <button
                         onClick={() => setIsCollapsed((prev) => !prev)}
                         className="text-gray-500 hover:text-gray-700 transition"
-                        title={isCollapsed ? "توسيع" : "تصغير"}
+                        title={isCollapsed ? "expand" : "minimize"}
                     >
                         {isCollapsed ? (
                             <span className="text-xl">»</span>

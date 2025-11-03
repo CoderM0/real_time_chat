@@ -35,7 +35,7 @@ class ChatController extends Controller
     }
     public function mark_as_read(Message $msg)
     {
-        $msg->update(["read_at" => now()]);
+        $msg->update(["read_at" => now(), 'msg_status' => "readed"]);
         broadcast(new MessageRead($msg));
         return response()->json(["status" => "read"]);
     }

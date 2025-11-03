@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { FaCheck, FaCheckDouble, FaClock } from "react-icons/fa";
 
-export default function Message({ message, currentUserId, refs }) {
+export default function Message({
+    message,
+    currentUserId,
+    refs,
+    messageStatusUpdates,
+}) {
     const isCurrentUser = message.sender_id === currentUserId;
 
     const formatTime = (datetime) => {
@@ -11,12 +16,12 @@ export default function Message({ message, currentUserId, refs }) {
         return `${hours}:${minutes}`;
     };
 
-    const [msgStatus, setMsgStatus] = useState("sending");
+    const [msgStatus, setMsgStatus] = useState(message.msg_status || "sending");
     useEffect(() => {
-        if (message.read_at != null) {
-            setMsgStatus("readed");
+        if (messageStatusUpdates[message.id]) {
+            setMsgStatus(messageStatusUpdates[message.id]);
         }
-    }, []);
+    }, [messageStatusUpdates, message.id]);
     const renderStatusIcon = () => {
         if (msgStatus === "sending") {
             return <FaClock className="w-3 h-3 text-gray-400 ml-1" />;
